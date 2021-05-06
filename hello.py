@@ -28,6 +28,7 @@ def migrate():
         dcursor.execute("INSERT INTO dbo.Person3 (Name) Values ('" + srow[0] + "')")
         dest.commit()
         srow = scursor.fetchone()
+    return "<h1>Migration Done</h1>"
 
 
 app.run(host='0.0.0.0', port=5000)
