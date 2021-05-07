@@ -1,13 +1,13 @@
 import flask
 import pyodbc
 import ran
-server = 'intel1.database.windows.net'
+server = 'intellipaat1.database.windows.net'
 sdatabase = 'intel'
 ddatabase = 'intel'
 username = 'intel'
-password = 'paat@123'
+password = 'Paat@123'
 driver = '{ODBC Driver 17 for SQL Server}'
-
+#azure key vault to explored or kubernetes secret
 src = pyodbc.connect('DRIVER=' + driver + ';SERVER=' + server + ';PORT=1433;DATABASE=' + sdatabase + ';UID=' + username + ';PWD=' + password)
 dest = pyodbc.connect('DRIVER=' + driver + ';SERVER=' + server + ';PORT=1433;DATABASE=' + ddatabase + ';UID=' + username + ';PWD=' + password)
 scursor = src.cursor()
@@ -25,7 +25,7 @@ def home():
 def migrate():
     scursor.execute("SELECT * FROM dbo.MOCK_DATA")
     srow = scursor.fetchone()
-
+#pandas df to use
     while srow:
         predict = ran.predict()
         dcursor.execute("INSERT INTO dbo.Person5 (Age, Income, No_of_Logins, predict) Values ('" + str(srow[0]) + "', '" + str(srow[1]) + "', '" + str(srow[2]) + "', '" + str(predict) + "')")
