@@ -1,5 +1,6 @@
 import flask
 import pyodbc
+import ran
 server = 'intel1.database.windows.net'
 sdatabase = 'intel'
 ddatabase = 'intel'
@@ -22,10 +23,12 @@ def home():
 
 @app.route('/migrate', methods=['GET'])
 def migrate():
-    scursor.execute("SELECT * FROM dbo.MOCK_DAT")
+    scursor.execute("SELECT * FROM dbo.MOCK_DATA")
     srow = scursor.fetchone()
+
     while srow:
-        dcursor.execute("INSERT INTO dbo.Person3 (Name) Values ('" + srow[0] + "')")
+        predict = ran.predict()
+        dcursor.execute("INSERT INTO dbo.Person5 (Age, Income, No_of_Logins, predict) Values ('" + str(srow[0]) + "', '" + str(srow[1]) + "', '" + str(srow[2]) + "', '" + str(predict) + "')")
         dest.commit()
         srow = scursor.fetchone()
     return "<h1>Migration Done</h1>"
