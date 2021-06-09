@@ -1,11 +1,11 @@
 import flask
 import pyodbc
 import ran
-server = 'intellipaat1.database.windows.net'
-sdatabase = 'intel'
-ddatabase = 'intel'
-username = 'intel'
-password = 'Paat@123'
+server = 'tomsdb.database.windows.net'
+sdatabase = 'tomsdb'
+ddatabase = 'tomsdb'
+username = 'student'
+password = 'Password1'
 driver = '{ODBC Driver 17 for SQL Server}'
 #azure key vault to explored or kubernetes secret
 src = pyodbc.connect('DRIVER=' + driver + ';SERVER=' + server + ';PORT=1433;DATABASE=' + sdatabase + ';UID=' + username + ';PWD=' + password)
