@@ -1,13 +1,13 @@
 import flask
 import pyodbc
-import ran
-server = 'tomsdb.database.windows.net'
-sdatabase = 'tomsdb'
-ddatabase = 'tomsdb'
-username = 'student'
-password = 'Password1'
+import kmeans
+server = 'intelzs.database.windows.net'
+sdatabase = 'intel'
+ddatabase = 'intel'
+username = 'intel'
+password = 'Paat@123'
 driver = '{ODBC Driver 17 for SQL Server}'
-#azure key vault to explored or kubernetes secret
+# azure key vault to explored or kubernetes secret
 src = pyodbc.connect('DRIVER=' + driver + ';SERVER=' + server + ';PORT=1433;DATABASE=' + sdatabase + ';UID=' + username + ';PWD=' + password)
 dest = pyodbc.connect('DRIVER=' + driver + ';SERVER=' + server + ';PORT=1433;DATABASE=' + ddatabase + ';UID=' + username + ';PWD=' + password)
 scursor = src.cursor()
@@ -23,15 +23,12 @@ def home():
 
 @app.route('/migrate', methods=['GET'])
 def migrate():
-    scursor.execute("SELECT * FROM dbo.MOCK_DATA")
-    srow = scursor.fetchone()
-#pandas df to use
-    while srow:
-        predict = ran.predict()
-        dcursor.execute("INSERT INTO dbo.Person5 (Age, Income, No_of_Logins, predict) Values ('" + str(srow[0]) + "', '" + str(srow[1]) + "', '" + str(srow[2]) + "', '" + str(predict) + "')")
+    data = kmeans.predict()
+# pandas df to use
+    for i, row in data.iterrows():
+        dcursor.execute("INSERT INTO dbo.Person5 (CustomerID, Amount, Frequency, Recency, ClusterID) Values (?,?,?,?,?)", row.CustomerID, row.Amount, row.Frequency, row.Recency, row.Cluster_Id)
         dest.commit()
-        srow = scursor.fetchone()
-    return "<h1>Migration Done</h1>"
+    return "<h1>Prediction Done</h1>"
 
 
 app.run(host='0.0.0.0', port=5000)

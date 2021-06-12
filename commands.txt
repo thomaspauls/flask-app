@@ -1,0 +1,4 @@
+az acr build -t zs/flaskapp:v2 -r zsproject .
+az aks get-credentials --resource-group zsproject --name zsproject
+kubectl create pod.yaml
+kubectl create service loadbalancer flask --tcp=80:5000
